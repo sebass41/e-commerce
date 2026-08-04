@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang= "en">
+	<head>
+		<meta charset="UTF-8">
+		<title>M&S Market</title>
+		<link rel="stylesheet" href="css/style.css">
+		
+	</head>
+	<body>
+		<header>
+			<h1>M&S Market</h1>
+			<nav class="navbar-container">
+				<a href="ayuda.html">AYUDA</a>
+				<a href="login.html" id="login-btn">INGRESAR</a>
+				<a href="registro-producto.html" class="admin">REGISTRAR PRODUCTO</a>
+				<a href="registro-categoria.html" class="admin">REGISTRAR CATEGORÍA</a>
+				<a href="editar-producto.html" class="admin">EDITAR PRODUCTO</a>
+				<a href="ver-ventas.html" class="admin">VER VENTAS</a>
+				<button id="btn-salir" class="admin btn">CERRAR SESIÓN</button>
+				<a href="carrito.html"><img src="img/carrito.png" width="50px"></a>
+			</nav>
+		</header>
+		<main class="main-container container">
+			<div class="form-group">
+				<input
+					type="text"
+					id="filtro-input"
+					name="filtro-input"
+					placeholder="buscar articulo"
+					required>
+				</input>
+			</div>
+			<br>
+			<select id="filtro-categoria" class="filter-btn"></select>
+			<br>
+			<br>
+			<div id="seccionProductos" class="dashboard-grid"></div>
+
+			<div id="modal" class="modal hidden">
+				<div class="modal-content">
+					<button class="modal-close" id="modal-close">X</button>
+					<h3 id="modal-title"></h3>
+					<p id="modal-message"></p>
+				</div>
+			</div>
+		</main>
+
+		<script src="js/storage.js"></script>
+		<script src="js/modelos.js"></script>
+		<script src="js/gestores/gestorProductos.js"></script>
+		<script src="js/gestores/gestorCategorias.js"></script>
+		<script src="js/comun.js"></script>
+		<script src="js/init.js"></script>
+		<script src="js/pages/detalle-producto.js"></script>
+		<script src="js/pages/index.js"></script>		
+	</body>
+</html>
+	

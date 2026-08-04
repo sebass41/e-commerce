@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang= "en">
+	<head>
+		<meta charset="UTF-8">
+		<title>CARRITO</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+	<header>
+		<h1>MI CARRITO</h1>
+		<a href="ayuda.html">AYUDA</a>
+		<a href="index.html">INICIO</a>
+	</header>
+	<main class="main-container">
+		<div id="seccionProductos" class="container"></div>
+        <div id="montos" class="container">
+            <h3>Total</h3>
+            <p>Subtotal: <b id="subtotal"></b></p>
+            <p>IVA: <b id="iva"></b></p>
+            <p>Total: <b id="total"></b></p>
+			<a class="btn btn-primary" href="confirmar-compra.html">Comprar</a>
+        </div>
+
+	</main>
+		<script src="js/storage.js"></script>
+		<script src="js/modelos.js"></script>
+		<script src="js/gestores/gestorProductos.js"></script>
+		<script src="js/comun.js"></script>
+		<script src="js/pages/carrito.js"></script>		
+	</body>
+</html>
+	

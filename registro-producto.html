@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang= "en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Registro de Producto</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<header>
+			<h1>REGISTRAR PRODUCTOS</h1>
+			<a href="index.html" type="button">ATRÁS</a>
+		</header>
+		<main class="main-container">
+			<form id="form-producto" class="container form-container">
+				<div class="form-group">
+					<label for="producto">NOMRBE:</label>
+					<input 
+						type="text" 
+						id="nombre" 
+						name="nombre" 
+						placeholder="Papa"
+						required>
+				</div>
+				
+				<div class="form-group">
+					<label for="precio">DESCRIPCIÓN:</label>
+					<textarea id="descripcion" name="descripcion" required></textarea>
+				</div>
+				
+				<div class="form-group">
+					<label for="precio">PRECIO en $:</label>
+					<input 
+						type="number" 
+						id="precio" 
+						name="precio"
+						placeholder="18"
+						min="1"
+						required>
+				</div>
+				
+				<div class="form-group">
+					<label for="stock">STOCK:</label>
+					<input 
+						type="number" 
+						id="stock" 
+						name="stock"
+						placeholder="10"
+						min="1"
+						required>
+				</div>
+
+				<div class="form-group">
+					<label for="tipoIVA">TIPO DE IVA:</label>
+					<select id="tipoIVA" class="filter-btn">
+						<option value="">Seleccione el tipo de IVA</option>
+						<option value="minimo">IVA Mínimo</option>
+						<option value="basico">IVA básico</option> 
+						<option value="exento">IVA Exento</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label for="stock">IMAGEN:</label>
+					<input 
+						type="text" 
+						id="imagen" 
+						placeholder="Dirección de la imágen"
+						name="imagen">
+				</div>
+
+				<div class="form-group">
+					<label>CATEGORÍA:</label>
+					<select id="categoria" class="filter-btn"></select>
+				</div>
+	
+				<button class="btn btn-primary" type="submit">Guardar</button>
+			</form>
+		</main>
+		
+			<script src="js/storage.js"></script>
+			<script src="js/modelos.js"></script>
+			<script src="js/gestores/gestorCategorias.js"></script>
+			<script src="js/gestores/gestorProductos.js"></script>
+			<script src="js/comun.js"></script>
+			<script src="js/pages/registro-producto.js"></script>
+	</body>
+</html>
