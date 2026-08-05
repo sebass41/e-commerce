@@ -38,29 +38,6 @@ function mostrarVentas(ventas){
     }
 }
 
-function mostrarCategorias(){
-    let select = document.getElementById("filtro-categoria");
-    let categorias;
-    let i;
-    let option;
-
-    categorias = GestorCategorias.obtenerTodos();
-    select.innerHTML = "";
-
-    option = document.createElement("option");
-    option.value = "todos";
-    option.textContent = "Todos";
-    select.appendChild(option);
-
-    for (i = 0; i < categorias.length; i++) {
-        option = document.createElement("option");
-        option.value = categorias[i].id;
-        option.className = "filter-tabs"
-        option.textContent = categorias[i].nombre;
-        select.appendChild(option);
-    }
-}
-
 function verificarAdmin(){
     if(esAdmin()){
         let botonesAdmin = document.querySelectorAll(".admin");
