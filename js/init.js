@@ -1,15 +1,5 @@
 function cargarContenido(){
-    /*
-            id: id,
-			nombre: nombre,
-			descripcion: descripcion,
-			precio: precio,
-			stock: stock,
-			tipoIVA: tipoIVA,
-			categoria: categoria,
-			imagen: imagen,
-			visible: true
-    */
+
 
     let fideos ={
 			id: 7,
