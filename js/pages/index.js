@@ -82,25 +82,18 @@ function mostrarProductos(productos){
 }
 
 function mostrarCategorias(){
-    let select = document.getElementById("filtro-categoria");
+	let contenedorCategorias = document.getElementById("contenedorCategorias");
     let categorias;
     let i;
-    let option;
+    let li;
 
     categorias = GestorCategorias.obtenerTodos();
-    select.innerHTML = "";
-
-    option = document.createElement("option");
-    option.value = "todos";
-    option.textContent = "Todos";
-    select.appendChild(option);
+    contenedorCategorias.innerHTML = "";
 
     for (i = 0; i < categorias.length; i++) {
-        option = document.createElement("option");
-        option.value = categorias[i].id;
-        option.className = "filter-tabs"
-        option.textContent = categorias[i].nombre;
-        select.appendChild(option);
+        li = document.createElement("li");
+		li.innerHTML= `<a class="dropdown-item" href="#" id= "${categorias[i].id}">"${categorias[i].nombre}"</a></li>`
+		contenedorCategorias.appendChild(li);
     }
 }
 
