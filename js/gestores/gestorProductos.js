@@ -46,8 +46,9 @@ let GestorProductos = {
     },
 
     obtenerPorCategoria: function(categoria){
-        if(categoria === "todos"){
-            return this.obtenerVisibles();
+        console.log(categoria === 0);
+        if(categoria === 0){
+            return {exito: true, mensaje: "Obtenido correctamente", datos: this.obtenerVisibles()};
         }
 
         let productos = this.obtenerVisibles();

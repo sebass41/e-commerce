@@ -8,18 +8,6 @@ document.addEventListener("DOMContentLoaded", function(){
     let productos = GestorProductos.obtenerVisibles();
     mostrarProductos(productos);
     mostrarCategorias();
-    let filtroCategoria = document.getElementById("filtro-categoria");
-    if (filtroCategoria) {
-        filtroCategoria.addEventListener("change", function() {
-            let productosFiltro = GestorProductos.obtenerPorCategoria(this.value).datos;
-            
-            if (this.value === "todos") {
-                productosFiltro = productos;
-            }
-            
-            mostrarProductos(productosFiltro);
-        });
-    }
 
     let filtroInput = document.getElementById("filtro-input");
     
@@ -90,10 +78,22 @@ function mostrarCategorias(){
     categorias = GestorCategorias.obtenerTodos();
     contenedorCategorias.innerHTML = "";
 
+    liTodos = document.createElement("li");
+    liTodos.innerHTML = '<a class=dropdown-item href="#">Ver Todos</a></li>';
+    contenedorCategorias.appendChild(liTodos);
+    liTodos.addEventListener("click", function(){
+        filtrarPorCategoria(0);
+    });
+
     for (i = 0; i < categorias.length; i++) {
         li = document.createElement("li");
-		li.innerHTML= `<a class="dropdown-item" href="#" id= "${categorias[i].id}">"${categorias[i].nombre}"</a></li>`
+		li.innerHTML= `<a class="dropdown-item" href="#">${categorias[i].nombre}</a></li>`;
+        let idCategoria = categorias[i].id;
+
 		contenedorCategorias.appendChild(li);
+        li.addEventListener("click", function(){
+            filtrarPorCategoria(idCategoria);
+        });
     }
 }
 
@@ -107,3 +107,7 @@ function verificarAdmin(){
     }
 }
 
+function filtrarPorCategoria(idCategoria){
+    let productosFiltro = GestorProductos.obtenerPorCategoria(idCategoria).datos;
+    mostrarProductos(productosFiltro);
+}
