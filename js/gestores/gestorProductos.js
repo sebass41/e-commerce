@@ -1,131 +1,123 @@
-let GestorProductos = {
-    clave: "productos",
+import {Producto} from "../modelos/Producto.js";
+import {Respuesta} from "./res/Respuesta.js";
 
-    obtenerTodos: function() {
-        return leerDeStorage(this.clave, []);
-    },
- 
-    guardarTodos: function(productos) {
-        guardarEnStorage(this.clave, productos);
-    },
+export class GestorProductos {
+    #productos;
+    #storage;
+    #clave;
 
-    obtenerVisibles: function(){
-        let productos = this.obtenerTodos();
-        let productosVisibles = [];
-
-        for(let i=0; i < productos.length; i++){
-            if(productos[i].visible){
-                productosVisibles.push(productos[i]);
-            }
-        }
-
-        return productosVisibles;
-    },
-
-    registrar: function(nombre, descripcion, precio, stock, tipoIVA, categoría, imagen) {
-        let productos = this.obtenerTodos();
-		
-        let nuevo = crearProducto(nombre, descripcion, precio, stock, categoría, tipoIVA || "minimo", imagen || "https://cdn-icons-png.flaticon.com/512/17003/17003579.png", generarNuevoId(productos));
-        productos.push(nuevo);
-        this.guardarTodos(productos);
-
-        return { exito: true, mensaje: "Producto Agregado", datos: productos };
-    },
-
-    obtenerPorId: function(id) {
-        let productos = this.obtenerTodos();
-        let i;
-
-        for (i = 0; i < productos.length; i++) {
-            if (productos[i].id === id) {
-                return { exito: true, mensaje: "Producto encontrado", datos: productos[i] };
-            }
-        }
-
-        return { exito: false, mensaje: "No se encontró el producto", datos:null };
-    },
-
-    obtenerPorCategoria: function(categoria){
-        console.log(categoria === 0);
-        if(categoria === 0){
-            return {exito: true, mensaje: "Obtenido correctamente", datos: this.obtenerVisibles()};
-        }
-
-        let productos = this.obtenerVisibles();
-        let productosFiltrados = []
-        let i;
-
-        for(i = 0; i < productos.length; i++){
-            if(productos[i].categoria == categoria){
-                productosFiltrados.push(productos[i]);
-            }
-        }
-
-        if(productosFiltrados.length === 0){
-            return {exito: false, mensaje: "No se encontraron productos de esta categoría", datos: null};
-        }
-        return {exito: true, mensaje:"Se encontraron productos de esta categoría", datos:productosFiltrados};
-    },
-	
-	eliminar: function(id){
-		let productos = this.obtenerTodos();
-		
-		for(let i = 0; i < productos.length; i++){
-			if (productos[i].id === id) {
-				productos[i].visible = false;
-
-                this.guardarTodos(productos);
-                return  { exito: true, mensaje: "Eliminado correctamente", datos:null };
-            }
-		}
-		return  { exito: false, mensaje: "No se pudo eliminar", datos:null };
-	},
-	
-	aumentarStock(id, stock){
-		let productos = this.obtenerTodos();
-		
-		for(let i = 0; i < productos.length; i++){
-			if (productos[i].id === id) {
-				productos[i].stock += stock;
-
-                this.guardarTodos(productos);
-                return  { exito: true, mensaje: "Modificado correctamente", datos: productos[i].stock };
-            }
-		}
-		return  { exito: false, mensaje: "No se pudo modificar", datos:null };
-	},
-
-    restarStock(id, stock){
-        let productos = this.obtenerTodos();
-		
-		for(let i = 0; i < productos.length; i++){
-			if (productos[i].id === id) {
-                console.log(id, stock)
-				productos[i].stock -= stock;
-
-                this.guardarTodos(productos)
-                return  { exito: true, mensaje: "Modificado correctamente", datos: productos[i].stock };
-            }
-		}
-		return  { exito: false, mensaje: "No se pudo modificar", datos:null };
-    },
-
-	calcularIVA: function(producto) {
-        let IVA = 0;
-        switch (producto.tipoIVA) {
-            case "minimo":
-                IVA = 0.21;
-                break;
-            case "basico":
-                IVA = 0.10;
-                break;
-            case "exento":
-                IVA = 0;
-                break;
-        }
-        let ivaTotal = producto.precio * IVA 
-        return ivaTotal.toFixed(2);
+    constructor(storage, clave = "productos"){
+        this.#storage = storage;
+        this.#clave = clave;
+        this.#productos = [];
+        this.cargar();
     }
 
+    obtenerTodos() {
+        return [...this.#productos];
+    }
 
-};
+    obtenerVisibles() {
+        return this.#productos.filter(producto => producto.visible);
+    }
+
+    obtenerPorId(id) {
+        let idNumerico = Number(id);
+        return this.#productos.find(producto => producto.id === idNumerico);
+    }
+
+    obtenerSiguienteId() {
+        if (this.#productos.length === 0) {
+            return 1;
+        }
+
+        let mayorId = this.#productos[0].id;
+
+        for (const producto of this.#productos) {
+            if (producto.id > mayorId) {
+                mayorId = producto.id;
+            }
+        }
+
+        return mayorId + 1;
+    }
+
+    registrar(nombre, descripcion, precio, stock, tipoIVA, categoría, imagen) {
+        let producto = new Producto(
+            this.obtenerSiguienteId(),
+            nombre, 
+            descripcion, 
+            precio, 
+            stock, 
+            categoría, 
+            tipoIVA, 
+            imagen
+        );
+		
+        this.#productos.push(producto);
+        this.guardar();
+
+        return producto;
+    }
+
+    obtenerPorCategoria(categoria){
+        if(categoria === 0){
+            return this.obtenerVisibles();
+        }
+
+        let productosFiltrados = this.#productos.filter(producto => producto.categoria === categoria);
+
+        if(productosFiltrados.length === 0){
+            return new Respuesta(false, "No se encontraron productos de esta categoría", null);
+        }
+        return new Respuesta(true, "Se encontraron productos de esta categoría", productosFiltrados);
+    }
+	
+	eliminar (id){
+		let producto = this.obtenerPorId(id);
+		
+        if(producto){
+            producto.visible = false;
+            guardar();
+            return new Respuesta(true, "Eliminado correctamente", []);
+        }
+        return new Respuesta(false, "No se encontró el producto a eliminar", []);
+    }
+
+    actualizarStock(id, stock){
+        let producto = this.obtenerPorId(id);
+		
+        if(producto){
+            producto.stock += stock;
+            this.guardar();
+            return new Respuesta(true, "Actualizado correctamente", []);
+        }
+        return new Respuesta(false, "No se pudo actualizar", []);
+    }
+
+    calcularIVA(producto) {
+        let porcentaje = 0;
+        switch (producto.tipoIVA) {
+            case "minimo": 
+                porcentaje = 0.21; 
+                break;
+            case "basico": 
+                porcentaje = 0.10; 
+                break;
+            case "exento": 
+                porcentaje = 0; 
+                break;
+        }
+        return (producto.precio * porcentaje).toFixed(2);
+    }
+
+    guardar() {
+        this.#storage.guardar(this.#clave, this.#productos);
+    }
+
+    cargar() {
+        let datos = this.#storage.obtener(this.#clave, []);
+        this.#productos = datos.map(d => JSON.parse(d));
+    }
+
+}
