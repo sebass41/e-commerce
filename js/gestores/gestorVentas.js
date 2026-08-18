@@ -1,35 +1,59 @@
-let GestorVentas = {
-    clave: "ventas",
+import {Venta} from "../modelos/Venta.js";
+import {Respuesta} from "./res/Respuesta.js";
 
-    obtenerTodos: function() {
-        return leerDeStorage(this.clave, []);
-    },
- 
-    guardarTodos: function(ventas) {
-        guardarEnStorage(this.clave, ventas);
-    },
+export class GestorVentas {
+    #ventas;
+    #storage;
+    #clave;
 
-    registrar: function(subtotal, iva, total, productos, usuario) {
-        let ventas = this.obtenerTodos();
-		let fecha = new Date().toString();
+    constructor(storage, clave = "ventas"){
+        this.#storage = storage;
+        this.#clave = clave;
+        this.#ventas = [];
+        this.cargar();
+    }
 
-        let nuevo = crearVenta(subtotal, iva, total, usuario, fecha, productos, generarNuevoId(ventas));
-        
-        ventas.push(nuevo);
-        this.guardarTodos(ventas);
-        return { exito: true, mensaje: "Venta registrada!", datos: ventas };
-    },
+     obtenerSiguienteId() {
+        if (this.#ventas.length === 0) {
+            return 1;
+        }
 
-    obtenerPorId: function(id) {
-        let ventas = this.obtenerTodos();
-        let i;
+        let mayorId = this.#ventas[0].id;
 
-        for (i = 0; i < ventas.length; i++) {
-            if (ventas[i].id === id) {
-                return { exito: true, mensaje: "Producto encontrado", datos: ventas[i] };
+        for (const venta of this.#ventas) {
+            if (producto.id > mayorId) {
+                mayorId = producto.id;
             }
         }
 
-        return { exito: false, mensaje: "No se encontró el producto", datos:null };
+        return mayorId + 1;
     }
-};
+
+    obtenerTodos() {
+        return [...this.#ventas];
+    }
+
+    registrar (subtotal, iva, total, productos, usuario) {
+		let fecha = new Date().toString();
+       
+        let venta = new Venta(obtenerSiguienteID(), subtotal, iva, total, usuario, fecha, productos);
+        
+        this.#productos.push(nuevo);
+        this.guardar();
+        return venta;
+    }
+
+    obtenerPorId(id) {
+        let idNumerico = Number(id);
+        return this.#ventas.find(ventas => venta.id === idNumerico);
+    }
+
+    guardar() {
+        this.#storage.guardar(this.#clave, this.#ventas);
+    }
+
+    cargar() {
+        let datos = this.#storage.obtener(this.#clave, []);
+        this.#ventas = datos.map(d => JSON.parse(d));
+    }
+}
