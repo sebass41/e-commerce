@@ -99,7 +99,7 @@ export class GestorProductos {
         let porcentaje = 0;
         switch (producto.tipoIVA) {
             case "minimo": 
-                porcentaje = 0.21; 
+                porcentaje = 0.22; 
                 break;
             case "basico": 
                 porcentaje = 0.10; 

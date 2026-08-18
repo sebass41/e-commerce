@@ -1,47 +1,66 @@
-let GestorCategorias = {
-    clave: "categorias",
+import {Categoria} from "../modelos/Categoria.js";
+import {Respuesta} from "./res/Respuesta.js";
 
-    obtenerTodos: function() {
-        return leerDeStorage(this.clave, []);
-    },
-
-    guardarTodos: function(productos) {
-        guardarEnStorage(this.clave, productos);
-    },
-
-    registrar: function(nombre) {
-        let categorias = this.obtenerTodos();
-		
-        let nueva = crearCategoria(nombre, generarNuevoId(categorias));
-        categorias.push(nueva);
-        this.guardarTodos(categorias);
-
-        return { exito: true, mensaje: "Categoría Agregada", datos: null };
-    },
-
-    obtenerPorId: function(id) {
-        let categorias = this.obtenerTodos();
-        let i;
-
-        for (i = 0; i < categorias.length; i++) {
-            if (categorias[i].id === id) {
-                return { exito: false, mensaje: "No se encontró la categoría", datos: categorias[i] };
-            }
-        }
-
-        return { exito: false, mensaje: "No se encontró la categoría", datos:null };
-    },
+export class GestorCategorias {
+    #clave;
+	#storage;
+	#categorias;
 	
-	eliminar: function(id){
-		let categorias = this.obtenerTodos();
+	constructor(storage, clave= "categorias"){
+		this.#clave= clave;
+		this.#storage= storage;
+		this.#cateegorías= [];
+		this.cargar();
+	}
 		
-		for(let i = 0; i < categorias.length; i++){
-			if (categorias[i].id === id) {
-				categorias.splice(i, 1);
-                return  { exito: true, mensaje: "Eliminado correctamente", datos:null };
-            }
+    obtenerTodo()
+		return [...this.#categorias];
+	}
+
+   // guardarTodos: function(productos) {
+    //    guardarEnStorage(this.clave, productos);
+    //},
+
+    registrar(nombre) {
+		let categoria= new Categoria(
+			this.obtenerSiguientId(),
+			nombre
+		);
+		
+		this.#cateegorías.push(categoria);
+		this.guardar();
+		
+		return categoria;
+	}
+    
+
+    obtenerPorId(id){
+		let idNumerico= number(id);
+		return this.#categorias.find(categoria => categoria.id === idNumerico);
+	} 
+	
+	obtenerSiguienteId() {
+		if (this.#categorias.length === 0){
+			return 1;
 		}
-		return  { exito: false, mensaje: "No se pudo eliminar", datos:null };
+		
+		let mayorId= this.#cateegorías[0].id;
+		
+		for (const categoria of this.#categorias){
+			if (categoria.id > mayorId){
+				mayorId= categoria.id;
+			}
+		}
+		return mayorId + 1;
+	}
+    
+	guardar() {
+		this.#storage.guardar(this.#clave, this.#categorias);
+	}
+	
+	cargar() {
+		let datos= this.#storage.obtener(this.#clave, []);
+		this.#productos= datos.map(d => JSON.parse(d));
 	}
 	
 };
