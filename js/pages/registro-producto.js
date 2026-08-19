@@ -1,6 +1,15 @@
+import { storage } from "..gestores/GestorStorage.js";
+import { GestorProductos } from "../gestores/GestorProductos.js";
+
+let gestorProductos;
+let storage;
+
 document.addEventListener("DOMContentLoaded", function() {
     protegerPagina();
     mostrarCategorias();
+
+gestorProductos= new GestorProductos()
+storage= new Storage()
 
     let form = document.getElementById("form-producto");
     if (!form) {
@@ -24,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return
         }
 
-        let r = GestorProductos.registrar(nombre, descripcion, precio, stock, tipoIVA, categoria, imagen);
+        let r = gestorProductos.registrar(nombre, descripcion, precio, stock, tipoIVA, categoria, imagen);
             
         alert(r.mensaje);
         limpiarControles();
