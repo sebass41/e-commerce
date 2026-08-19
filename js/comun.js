@@ -1,5 +1,5 @@
 function esAdmin() {
-    if (leerDeStorage("sesion") !== 1) {
+    if (localStorage.getItem("sesion") !== 1) {
         return false;
     }
     return true

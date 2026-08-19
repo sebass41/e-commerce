@@ -22,7 +22,7 @@ export class Producto {
             visible
         ) {
         this.#id = id;
-        this.#nombre = nombre;
+        this.#nombre = nombre; 
         this.#descripcion = descripcion;
         this.#precio = precio;
         this.#stock = stock;
@@ -111,17 +111,33 @@ export class Producto {
     }
 
     get tipoIVA(){
-        return this.#stock;
+        return this.#tipoIVA;
     }
 
-    set tipoIVA(){
+    set tipoIVA(valor){
         let tipoIVA = String(valor).trim();
 
-        if (tipoIVa.length === 0) {
+        if (tipoIVA.length === 0) {
             throw new Error("El tipo de IVA es obligatorio.");
         }
 
         this.#tipoIVA = tipoIVA;
+    }
+
+    get visible() {
+        return this.#visible;
+    }
+
+    set visible(valor) {
+        this.#visible = Boolean(valor);
+    }
+
+    get imagen() {
+        return this.#imagen;
+    }
+
+    set imagen(valor) {
+        this.#imagen = String(valor).trim();
     }
 
     tieneStock(cantidad = 1) {

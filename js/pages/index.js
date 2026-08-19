@@ -1,13 +1,22 @@
+import { GestorProductos } from "../gestores/gestorProductos.js";
+import { GestorCategorias } from "../gestores/gestorCategorias.js";
+import { Storage } from "../gestores/GestorStorage.js";
+
 document.addEventListener("DOMContentLoaded", function(){
     verificarAdmin();
-
-    if(!leerDeStorage("productos", false)){
+    let storage = new Storage();
+    let gestorProductos = new GestorProductos(storage);
+    let gestorCategorias = new GestorCategorias(storage);
+    
+    if(!storage.existe("productos")){
         cargarContenido();
     }
-
-    let productos = GestorProductos.obtenerVisibles();
+    
+    let productos = gestorProductos.obtenerVisibles();
+    let categorias = gestorCategorias.obtenerTodos();
+    
     mostrarProductos(productos);
-    mostrarCategorias();
+    mostrarCategorias(categorias);
 
     let filtroInput = document.getElementById("filtro-input");
     
@@ -69,16 +78,14 @@ function mostrarProductos(productos){
     }
 }
 
-function mostrarCategorias(){
+function mostrarCategorias(categorias){
 	let contenedorCategorias = document.getElementById("contenedorCategorias");
-    let categorias;
     let i;
     let li;
-
-    categorias = GestorCategorias.obtenerTodos();
+    
     contenedorCategorias.innerHTML = "";
 
-    liTodos = document.createElement("li");
+    let liTodos = document.createElement("li");
     liTodos.innerHTML = '<a class=dropdown-item href="#">Ver Todos</a></li>';
     contenedorCategorias.appendChild(liTodos);
     liTodos.addEventListener("click", function(){

@@ -7,27 +7,23 @@ export class GestorCategorias {
 	#categorias;
 	
 	constructor(storage, clave= "categorias"){
-		this.#clave= clave;
-		this.#storage= storage;
-		this.#cateegorías= [];
+		this.#clave = clave;
+		this.#storage = storage;
+		this.#categorias = [];
 		this.cargar();
 	}
 		
-    obtenerTodo()
+    obtenerTodos(){
 		return [...this.#categorias];
 	}
 
-   // guardarTodos: function(productos) {
-    //    guardarEnStorage(this.clave, productos);
-    //},
-
     registrar(nombre) {
-		let categoria= new Categoria(
-			this.obtenerSiguientId(),
+		let categoria = new Categoria(
+			this.obtenerSiguienteId(),
 			nombre
 		);
 		
-		this.#cateegorías.push(categoria);
+		this.#categorias.push(categoria);
 		this.guardar();
 		
 		return categoria;
@@ -35,7 +31,7 @@ export class GestorCategorias {
     
 
     obtenerPorId(id){
-		let idNumerico= number(id);
+		let idNumerico= Number(id);
 		return this.#categorias.find(categoria => categoria.id === idNumerico);
 	} 
 	
@@ -44,7 +40,7 @@ export class GestorCategorias {
 			return 1;
 		}
 		
-		let mayorId= this.#cateegorías[0].id;
+		let mayorId= this.#categorias[0].id;
 		
 		for (const categoria of this.#categorias){
 			if (categoria.id > mayorId){
@@ -59,8 +55,8 @@ export class GestorCategorias {
 	}
 	
 	cargar() {
-		let datos= this.#storage.obtener(this.#clave, []);
-		this.#productos= datos.map(d => JSON.parse(d));
+		let datos = this.#storage.obtener(this.#clave, []);
+		this.#categorias = datos.map(d => new Categoria(d.id, d.nombre));
 	}
 	
-};
+}

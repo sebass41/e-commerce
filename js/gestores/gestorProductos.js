@@ -49,8 +49,8 @@ export class GestorProductos {
             descripcion, 
             precio, 
             stock, 
-            categoría, 
             tipoIVA, 
+            categoría, 
             imagen
         );
 		
@@ -62,7 +62,7 @@ export class GestorProductos {
 
     obtenerPorCategoria(categoria){
         if(categoria === 0){
-            return this.obtenerVisibles();
+            return new Respuesta(true, "Productos obtendios con exito", this.obtenerVisibles());
         }
 
         let productosFiltrados = this.#productos.filter(producto => producto.categoria === categoria);
@@ -78,7 +78,7 @@ export class GestorProductos {
 		
         if(producto){
             producto.visible = false;
-            guardar();
+            this.guardar();
             return new Respuesta(true, "Eliminado correctamente", []);
         }
         return new Respuesta(false, "No se encontró el producto a eliminar", []);
@@ -95,21 +95,7 @@ export class GestorProductos {
         return new Respuesta(false, "No se pudo actualizar", []);
     }
 
-    calcularIVA(producto) {
-        let porcentaje = 0;
-        switch (producto.tipoIVA) {
-            case "minimo": 
-                porcentaje = 0.22; 
-                break;
-            case "basico": 
-                porcentaje = 0.10; 
-                break;
-            case "exento": 
-                porcentaje = 0; 
-                break;
-        }
-        return (producto.precio * porcentaje).toFixed(2);
-    }
+    
 
     guardar() {
         this.#storage.guardar(this.#clave, this.#productos);
@@ -117,7 +103,19 @@ export class GestorProductos {
 
     cargar() {
         let datos = this.#storage.obtener(this.#clave, []);
-        this.#productos = datos.map(d => JSON.parse(d));
+        this.#productos = 
+            datos.map(d => new Producto(
+                d.id, 
+                d.nombre, 
+                d.descripcion, 
+                d.precio,
+                d.stock, 
+                d.tipoIVA,
+                d.categoria, 
+                d.imagen, 
+                d.visible
+            )
+        );
     }
 
 }
