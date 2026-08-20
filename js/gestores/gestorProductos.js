@@ -98,24 +98,13 @@ export class GestorProductos {
     
 
     guardar() {
+        let datos = this.#productos.map(p => p.toJSON());
         this.#storage.guardar(this.#clave, this.#productos);
     }
 
     cargar() {
         let datos = this.#storage.obtener(this.#clave, []);
-        this.#productos = 
-            datos.map(d => new Producto(
-                d.id, 
-                d.nombre, 
-                d.descripcion, 
-                d.precio,
-                d.stock, 
-                d.tipoIVA,
-                d.categoria, 
-                d.imagen, 
-                d.visible
-            )
-        );
+        this.#productos = datos.map(d => Producto.fromJSON(d));
     }
 
 }

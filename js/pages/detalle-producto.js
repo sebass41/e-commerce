@@ -1,71 +1,88 @@
-function detalleProducto(id)
-{
-	let respuesta = GestorProductos.obtenerPorId(id);
-	let producto = respuesta.datos;
-	let contenedorResultado = "resultado" + id;
-	let contenedorDetalle = document.getElementById(contenedorResultado);
-	contenedorDetalle.innerHTML = " ";
-	if(producto.stock > 0){
-		contenedorDetalle.innerHTML+=`
-					<label><b>${producto.nombre}</b> $ ${producto.precio} </label><br>
-					${producto.descripcion}<br>
-					<input type="number" 
-							id="cantidad${producto.id}" 
-							name="cantidad" 
-							placeholder="ingresar cantidad" 
-							value="1"
-							min="1"
-							max="${producto.stock}"><br>
-					<button type="button" onClick="agregarAlCarrito(${id})" class="btn btn-secondary">Agregar al Carrito</button>
-					<br>
-					<button type="button" onClick="ocultar(${contenedorResultado})" class="btn btn-small">Ocultar</button>
-		`
-	}else{
-		contenedorDetalle.innerHTML+=`
-			<label for='articulo'><b>${producto.nombre}</b> a $${producto.precio} </label><br>
-			<p>${producto.descripcion}</p><br> 
-			<p><b>En el momento no contamos con stock suficiente</b></p>
-			<button type="button" onClick="ocultar(${contenedorResultado})">Ocultar</button>
-		`
-	}	
+import { GestorProductos } from "../gestores/gestorProductos.js";
+import { Storage } from "../gestores/GestorStorage.js";
+import {GestorCarrito} from "../gestores/gestorCarrito.js";
+
+let storage = new Storage
+let gestorProductos = new GestorProductos(storage);
+let gestorCarrito = new GestorCarrito(storage);
+
+export function mostrarDetalle(id) {
+    let producto = gestorProductos.obtenerPorId(id);
+    let idContenedor = "resultado" + id;
+    let contenedorDetalle = document.getElementById(idContenedor);
+
+    contenedorDetalle.innerHTML = "";
+
+    if (producto.stock > 0) {
+        contenedorDetalle.innerHTML = `
+            <label><b>${producto.nombre}</b> $ ${producto.precio}</label><br>
+            ${producto.descripcion}<br>
+
+            <input type="number" 
+                id="cantidad${producto.id}" 
+                name="cantidad" 
+                placeholder="ingresar cantidad" 
+                value="1"
+                min="1"
+                max="${producto.stock}"><br>
+
+            <button type="button" id="agregar${producto.id}" class="btn btn-secondary">
+                Agregar al Carrito
+            </button>
+            <br>
+
+            <button type="button" id="ocultar${producto.id}" class="btn btn-small">
+                Ocultar
+            </button>
+        `;
+
+        // Agregar eventos
+        let botonAgregar = document.getElementById("agregar" + producto.id);
+        let botonOcultar = document.getElementById("ocultar" + producto.id);
+
+        botonAgregar.addEventListener("click", function() {
+            agregarAlCarrito(producto.id);
+        });
+
+		
+        botonOcultar.addEventListener("click", function() {
+            ocultar(contenedorDetalle);
+        });
+
+    } else {
+        contenedorDetalle.innerHTML = `
+            <label>
+                <b>${producto.nombre}</b> a $${producto.precio}
+            </label><br>
+
+            <p>${producto.descripcion}</p><br> 
+
+            <p>
+                <b>En el momento no contamos con stock disponible</b>
+            </p>
+
+            <button type="button" id="ocultar${producto.id}">
+                Ocultar
+            </button>
+        `;
+
+		// Agregar eventos
+        let botonOcultar = document.getElementById("ocultar" + producto.id);
+
+        botonOcultar.addEventListener("click", function() {
+            ocultar(contenedorDetalle);
+        });
+    }
 }
 
-function ocultar(contenedorResultado)
-{
-	contenedorResultado.innerHTML = " ";
+function ocultar(contenedor) {
+	contenedor.innerHTML = "";
 }
 
-function agregarAlCarrito (id)
-{
-	if(comprobarDuplicado(id)){
-		mostrarModal(false,"El producto ya está en el carrito");
-		return
-	}
-	let carrito = leerDeStorage("carrito", []);
-	let producto = GestorProductos.obtenerPorId(id).datos;
+function agregarAlCarrito(id) {
+	let producto = gestorProductos.obtenerPorId(id);
 	let cantidad = parseInt(document.getElementById("cantidad" + id).value);
-
-	if (producto.stock < cantidad){
-		mostrarModal(false,"No hay suficientes productos: " + producto.stock + " en stock" );
-		return
-	}
-	let itemCarrito = 
-	{
-		id: id,
-		cantidad: cantidad
-	}
-
-	carrito.push(itemCarrito);
-	guardarEnStorage("carrito", carrito);
-	mostrarModal(true,"Se agregó al carrito " + cantidad + " unidades")
-}
-
-function comprobarDuplicado(id){
-	let carrito = leerDeStorage("carrito", []);
-	for (let i = 0; i < carrito.length; i++){
-		if (carrito[i].id === id){
-			return true;
-		}
-	}
-	return false;
+	let r = gestorCarrito.agregarProducto(producto, cantidad);
+	
+	mostrarModal(r.exito, r.msj);
 }

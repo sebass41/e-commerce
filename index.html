@@ -3,12 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>M&S Market</title>
-		<link rel="stylesheet" href="css/style.css">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
 		<header>
-	
       <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">M&S Market</a>
@@ -37,10 +36,10 @@
                    <li class="nav-item">
                     <a class="nav-link" href="editar-producto.html">EDITAR PRODUCTO</a>
                   </li>
-                   <li class="nav-item">
-                    <a class="nav-link" href="ver-ventas.html">VER VENTAS</a>
+                  <li class="nav-item">
+                    <a class="nav-link admin" href="ver-ventas.html">VER VENTAS</a>
                   </li>
-                   <li class="nav-item">
+                  <li class="nav-item">
                     <a class="nav-link" href="carrito.html"><img src="img/carrito.png" width="50px"></a>
                   </li>
                   <li class="nav-item dropdown">
@@ -58,8 +57,8 @@
                   </li>
                 </ul>
                 <form class="d-flex mt-3" role="search">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                  <button class="btn btn-success" type="submit">Search</button>
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="filtro-input"/>
+                  <button class="btn btn-success" type="button">Buscar..</button>
                 </form>
               </div>
             </div>
@@ -88,14 +87,6 @@
       </div>
 		</header>
 		<main class="main-container container">
-			<div class="form-group">
-				<input
-					type="text"
-					id="filtro-input"
-					name="filtro-input"
-					placeholder="buscar articulo"
-					required>
-			</div>
 			<div id="seccionProductos" class="dashboard-grid"></div>
 
 			<div id="modal" class="modal hidden">
@@ -106,9 +97,7 @@
 				</div>
 			</div>
 		</main>
-
-    <script src="js/comun.js"></script>
-		<script src="js/init.js"></script>
+    
 		<script src="js/pages/detalle-producto.js" type="module"></script>
 		<script src="js/pages/index.js" type="module"></script>	
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

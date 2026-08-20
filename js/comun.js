@@ -1,22 +1,22 @@
-function esAdmin() {
+export function esAdmin() {
     if (localStorage.getItem("sesion") !== 1) {
         return false;
     }
     return true
 }
 
-function protegerPagina(){
+export function protegerPagina(){
     if(!esAdmin()){
         window.location.href = "index.html";
     }
 }
 
-function cerrarSesionDesdePagina() {
+export function cerrarSesionDesdePagina() {
     localStorage.removeItem("sesion");
     window.location.reload();
 }
 
-function mostrarModal(exito, mensaje){
+export function mostrarModal(exito, mensaje){
     let modal = document.getElementById("modal");
     let tituloModal = document.getElementById("modal-title");
     let msjModal = document.getElementById("modal-message");
@@ -38,4 +38,3 @@ function cerrarModal(){
         });
     }
 }
-

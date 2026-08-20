@@ -618,6 +618,6 @@ textarea{
 }
 
 /* Agregado por nosotros */
-.admin {
-    display: none;
+li.nav-item .admin {
+  display: none;
 }

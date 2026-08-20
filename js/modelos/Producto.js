@@ -154,4 +154,32 @@ export class Producto {
         this.stock -= cantidad;
         return true;
     }
+    
+     toJSON() {
+        return {
+            id: this.id,
+            nombre: this.nombre,
+            descripcion: this.descripcion,
+            precio: this.precio,
+            stock: this.stock,
+            tipoIVA: this.tipoIVA,
+            categoria: this.categoria,
+            imagen: this.imagen,
+            visible: this.visible
+        };
+    }
+
+    static fromJSON(datos) {
+        return new Producto(
+            datos.id,
+            datos.nombre,
+            datos.descripcion,
+            datos.precio,
+            datos.stock,
+            datos.tipoIVA,
+            datos.categoria,
+            datos.imagen,
+            datos.visible
+        );
+    }
 }

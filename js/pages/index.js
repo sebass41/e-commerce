@@ -1,12 +1,20 @@
 import { GestorProductos } from "../gestores/gestorProductos.js";
 import { GestorCategorias } from "../gestores/gestorCategorias.js";
 import { Storage } from "../gestores/GestorStorage.js";
+import { mostrarDetalle } from "./detalle-producto.js";
+import { esAdmin } from "../comun.js";
+import { cargarContenido } from "../init.js";
+
+// Iniciar Página
+let storage;
+let gestorProductos
+let gestorCategorias
 
 document.addEventListener("DOMContentLoaded", function(){
     verificarAdmin();
-    let storage = new Storage();
-    let gestorProductos = new GestorProductos(storage);
-    let gestorCategorias = new GestorCategorias(storage);
+    storage = new Storage();
+    gestorProductos = new GestorProductos(storage);
+    gestorCategorias = new GestorCategorias(storage);
     
     if(!storage.existe("productos")){
         cargarContenido();
@@ -17,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function(){
     
     mostrarProductos(productos);
     mostrarCategorias(categorias);
+
+    // Filtros
 
     let filtroInput = document.getElementById("filtro-input");
     
@@ -61,19 +71,31 @@ function mostrarProductos(productos){
 
     for (i = 0; i < productos.length; i++) {
         producto = productos[i];
+        let idProducto = producto.id;
         div = document.createElement("div");
         div.className = "dashboard-card";
         
+        // Crear el botón
+        let boton = document.createElement("button");
+        boton.className = "btn btn-primary";
+        boton.type = "button";
+        boton.textContent = "Ver más";
+
+        // Asignar evento con addEventListener
+        boton.addEventListener("click", () => {
+            mostrarDetalle(idProducto);
+        });
+
         div.innerHTML =`
                     <div class="">
                         <h3>${producto.nombre}</h3>
                         <img src="${producto.imagen}" height="200px">
                         <p>$${producto.precio}</p>
-                        <button class="btn btn-primary" type="button" onClick="detalleProducto(${producto.id})">Ver más</button>
-					    <div id="resultado${producto.id}"></div>
+					    <div id="resultado${idProducto}"></div>
                     </div>
         `;
 
+        div.querySelector("div").appendChild(boton);
         lista.appendChild(div);
     }
 }
@@ -115,6 +137,13 @@ function verificarAdmin(){
 }
 
 function filtrarPorCategoria(idCategoria){
-    let productosFiltro = GestorProductos.obtenerPorCategoria(idCategoria).datos;
-    mostrarProductos(productosFiltro);
+    let respuesta = gestorProductos.obtenerPorCategoria(idCategoria);
+    let productos;
+
+    if(respuesta.exito){
+        productos = respuesta.datos;
+        mostrarProductos(productos);
+    }else{
+        document.getElementById("seccionProductos").textContent = respuesta.msj;
+    }
 }

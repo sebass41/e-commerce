@@ -1,4 +1,4 @@
-function cargarContenido(){
+export function cargarContenido(){
 
 
     let fideos ={

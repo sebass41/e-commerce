@@ -1,4 +1,4 @@
-import { ItemCarrito } from "./ItemCarrito";
+import { ItemCarrito } from "./ItemCarrito.js";
 
 export class Carrito {
     #items

@@ -1,3 +1,5 @@
+import { Producto } from "./Producto.js";
+
 export class ItemCarrito {
     #idProducto;
     #nombre;
@@ -47,8 +49,34 @@ export class ItemCarrito {
         this.#cantidad = cant;
         this.#subtotal = this.#precio * this.#cantidad;
     }
+
+    calcularSubtotal() {
+        return this.precio * this.cantidad;
+    }
+
     actualizarCantidad(cantidad){
         this.#cantidad = cantidad;
         this.#subtotal = this.#precio * this.#cantidad;
+    }
+
+    toJSON() {
+        return {
+            idProducto: this.#idProducto,
+            nombre: this.#nombre,
+            precio: this.#precio,
+            cantidad: this.#cantidad,
+            tipoIVA: this.#tipoIVA
+        };
+    }
+
+    static fromJSON(datos) {
+        let producto = {
+            id: datos.idProducto,
+            nombre: datos.nombre,
+            precio: datos.precio,
+            tipoIVA: datos.tipoIVA
+        };
+
+        return new ItemCarrito(producto, datos.cantidad);
     }
 }
