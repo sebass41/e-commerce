@@ -1,6 +1,7 @@
 import { GestorProductos } from "../gestores/gestorProductos.js";
 import { Storage } from "../gestores/GestorStorage.js";
 import {GestorCarrito} from "../gestores/gestorCarrito.js";
+import { mostrarModal } from "../comun.js";
 
 let storage = new Storage
 let gestorProductos = new GestorProductos(storage);
@@ -10,6 +11,7 @@ export function mostrarDetalle(id) {
     let producto = gestorProductos.obtenerPorId(id);
     let idContenedor = "resultado" + id;
     let contenedorDetalle = document.getElementById(idContenedor);
+	
 
     contenedorDetalle.innerHTML = "";
 

@@ -2,7 +2,7 @@ import { GestorProductos } from "../gestores/gestorProductos.js";
 import { GestorCategorias } from "../gestores/gestorCategorias.js";
 import { Storage } from "../gestores/GestorStorage.js";
 import { mostrarDetalle } from "./detalle-producto.js";
-import { esAdmin } from "../comun.js";
+import { esAdmin, mostrarModal} from "../comun.js";
 import { cargarContenido } from "../init.js";
 
 // Iniciar Página
@@ -139,7 +139,7 @@ function verificarAdmin(){
 function filtrarPorCategoria(idCategoria){
     let respuesta = gestorProductos.obtenerPorCategoria(idCategoria);
     let productos;
-
+    
     if(respuesta.exito){
         productos = respuesta.datos;
         mostrarProductos(productos);
