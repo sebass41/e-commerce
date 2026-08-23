@@ -1,6 +1,6 @@
-import {Carrito} from "../modelos/Carrito.js";
 import { ItemCarrito } from "../modelos/ItemCarrito.js";
-import {Respuesta} from "./res/Respuesta.js";
+import { Respuesta } from "./res/Respuesta.js";
+import { GestorProductos } from "./gestorProductos.js";
 
 export class GestorCarrito {
     #items;
@@ -22,7 +22,7 @@ export class GestorCarrito {
         let id = Number(idProducto);
 
         return this.#items.find(
-            item => item.id === id
+            item => item.idProducto === id
         );
     }
 
@@ -71,14 +71,16 @@ export class GestorCarrito {
         return eliminado;
     }
 
+    calcularSubtotal() {
+        return this.#items.reduce((acum, item) => acum + item.subtotal, 0);
+    }
+
+    calcularIVA(){
+        return this.#items.reduce((acum, item) => acum + item.calcularIVA(), 0);
+    }
+
     calcularTotal() {
-        let total = 0;
-
-        for (const item of this.#items) {
-            total += item.calcularSubtotal();
-        }
-
-        return total;
+        return this.calcularSubtotal() + this.calcularIVA();
     }
 
     vaciar() {

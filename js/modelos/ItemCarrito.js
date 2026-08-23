@@ -54,6 +54,22 @@ export class ItemCarrito {
         return this.precio * this.cantidad;
     }
 
+    calcularIVA() {
+        let porcentaje = 0;
+        switch (this.#tipoIVA) {
+            case "minimo": 
+                porcentaje = 0.22; 
+                break;
+            case "basico": 
+                porcentaje = 0.10; 
+                break;
+            case "exento": 
+                porcentaje = 0; 
+                break;
+        }
+        return this.#subtotal * porcentaje;
+    }
+
     actualizarCantidad(cantidad){
         this.#cantidad = cantidad;
         this.#subtotal = this.#precio * this.#cantidad;

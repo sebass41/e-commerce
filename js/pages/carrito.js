@@ -1,21 +1,31 @@
+import {Storage} from "../gestores/gestorStorage.js";
+import {GestorCarrito} from "../gestores/gestorCarrito.js";
+import {GestorProductos} from "../gestores/gestorProductos.js"
+let storage;
+let gestorCarrito;
+let gestorProductos;
+
 document.addEventListener("DOMContentLoaded", function(){
-    mostrarCarrito();
-	
+	storage = new Storage();
+	gestorCarrito = new GestorCarrito(storage);
+	gestorProductos = new GestorProductos(storage);
+
+	mostrarCarrito();
 });
 
 function mostrarCarrito(){
     let contenedorProductos = document.getElementById("seccionProductos");
-    let carrito = leerDeStorage("carrito", []);
-    if(carrito.length === 0){
+    let items = gestorCarrito.obtenerTodos();
+
+    if(items.length === 0){
         contenedorProductos.innerHTML="<p>No hay productos en el carrito <a href='index.html'>¡Agregá Productos!</a></p>"
 		document.getElementById("montos").innerHTML = "";
         return
     }
     contenedorProductos.innerHTML = "";
 
-    for(let i = 0; i < carrito.length; i++){
-        let respuesta = GestorProductos.obtenerPorId(carrito[i].id);
-        let producto = respuesta.datos;
+    for(let i = 0; i < items.length; i++){
+        let producto = gestorProductos.obtenerPorId(items[i].idProducto)
 		
         contenedorProductos.innerHTML +=`
             <div class="producto-carrito miembro-card">
@@ -24,7 +34,7 @@ function mostrarCarrito(){
                 <p>${producto.descripcion}</p>
                 <input type="number"
 						id="input${producto.id}"
-                        value="${carrito[i].cantidad}"
+                        value="${items[i].cantidad}"
                         min="1"
                         max="${producto.stock}"
                 > 
@@ -35,62 +45,11 @@ function mostrarCarrito(){
         `
 		
     }
-	mostrarMontos(carrito);
+	mostrarMontos();
 }
 
-
-function mostrarMontos(carrito)
-{
-	let subtotal = 0;
-	let IVA = 0;
-	for(let i = 0; i < carrito.length; i++){
-        let respuesta = GestorProductos.obtenerPorId(carrito[i].id);
-        let producto = respuesta.datos;
-		let cantidad = carrito[i].cantidad;
-     	let precio = producto.precio;
-		
-		subtotal += precio*cantidad;
-		IVA += GestorProductos.calcularIVA(producto) * cantidad;
-   	}
-   document.getElementById("subtotal").innerText = subtotal;
-   document.getElementById("iva").innerText = IVA.toFixed(2);
-   document.getElementById("total").innerText = (subtotal + IVA);   
-}
-
-function eliminarProducto(id)
-{
-	let carrito = leerDeStorage("carrito", []);
-	for(let i= 0; i < carrito.length; i++){
-		if(carrito[i].id === id){
-			carrito.splice(i, 1);
-			
-			guardarEnStorage("carrito", carrito);
-			mostrarCarrito();
-			return;
-		}
-	}	
-}
-
-function actualizarCantidad(id){
-	let carrito = leerDeStorage("carrito", []);
-	let inputCant = document.getElementById("input"+id);
-	
-	for(let i= 0; i < carrito.length; i++){
-		if(carrito[i].id === id){
-			let producto = GestorProductos.obtenerPorId(id).datos;
-			let cantidad = parseInt(inputCant.value);
-
-			if(producto.stock >= cantidad && cantidad > 0){
-				carrito[i].cantidad = cantidad;
-				
-				guardarEnStorage("carrito", carrito);
-				mostrarCarrito();
-				return;
-			}else {
-				mostrarModal(false, "Cantidad inválida o no hay suficiente stock");
-				return;
-			}
-		}
-	}
-
+function mostrarMontos() {
+	document.getElementById("subtotal").innerText = gestorCarrito.calcularSubtotal().toFixed(2);
+    document.getElementById("iva").innerText = gestorCarrito.calcularIVA().toFixed(2);
+    document.getElementById("total").innerText = gestorCarrito.calcularTotal().toFixed(2);
 }
