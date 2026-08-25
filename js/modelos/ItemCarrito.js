@@ -1,5 +1,3 @@
-import { Producto } from "./Producto.js";
-
 export class ItemCarrito {
     #idProducto;
     #nombre;

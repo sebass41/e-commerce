@@ -1,5 +1,5 @@
 import { GestorProductos } from "../gestores/gestorProductos.js";
-import { Storage } from "../gestores/GestorStorage.js";
+import { Storage } from "../gestores/gestorStorage.js";
 import {GestorCarrito} from "../gestores/gestorCarrito.js";
 import { mostrarModal } from "../comun.js";
 
