@@ -33,19 +33,18 @@ export class GestorVentas {
         return [...this.#ventas];
     }
 
-    registrar (subtotal, iva, total, productos, usuario) {
-		let fecha = new Date().toString();
-       
-        let venta = new Venta(obtenerSiguienteID(), subtotal, iva, total, usuario, fecha, productos);
+    registrar (subtotal, iva, total, productos, usuario, direccion) {
+	
+        let venta = new Venta(obtenerSiguienteID(), subtotal, iva, total, usuario, productos, direccion);
         
-        this.#productos.push(nuevo);
+        this.#ventas.push(nuevo);
         this.guardar();
         return venta;
     }
 
     obtenerPorId(id) {
         let idNumerico = Number(id);
-        return this.#ventas.find(ventas => venta.id === idNumerico);
+        return this.#ventas.find(venta => venta.id === idNumerico);
     }
 
     guardar() {
