@@ -1,19 +1,19 @@
-import {Venta} from "../modelos/Venta.js";
-import {Respuesta} from "./res/Respuesta.js";
+import { Venta } from "../modelos/Venta.js";
+import { Respuesta } from "./res/Respuesta.js";
 
 export class GestorVentas {
     #ventas;
     #storage;
     #clave;
 
-    constructor(storage, clave = "ventas"){
+    constructor(storage, clave = "ventas") {
         this.#storage = storage;
         this.#clave = clave;
         this.#ventas = [];
         this.cargar();
     }
 
-     obtenerSiguienteId() {
+    obtenerSiguienteId() {
         if (this.#ventas.length === 0) {
             return 1;
         }
@@ -21,8 +21,8 @@ export class GestorVentas {
         let mayorId = this.#ventas[0].id;
 
         for (const venta of this.#ventas) {
-            if (producto.id > mayorId) {
-                mayorId = producto.id;
+            if (venta.id > mayorId) {
+                mayorId = venta.id;
             }
         }
 
@@ -33,13 +33,21 @@ export class GestorVentas {
         return [...this.#ventas];
     }
 
-    registrar (subtotal, iva, total, productos, usuario, direccion) {
-	
-        let venta = new Venta(obtenerSiguienteID(), subtotal, iva, total, usuario, productos, direccion);
-        
-        this.#ventas.push(nuevo);
+    registrar(subtotal, iva, total, productos, usuario, direccion) {
+        let venta = new Venta(
+            this.obtenerSiguienteId(),
+            subtotal,
+            iva,
+            total,
+            usuario,
+            productos,
+            direccion
+        );
+
+        this.#ventas.push(venta);
         this.guardar();
-        return venta;
+
+        return new Respuesta(true, "Venta registrada correctamente", venta);
     }
 
     obtenerPorId(id) {
@@ -48,11 +56,12 @@ export class GestorVentas {
     }
 
     guardar() {
-        this.#storage.guardar(this.#clave, this.#ventas);
+        let datos = this.#ventas.map(v => v.toJSON());
+        this.#storage.guardar(this.#clave, datos);
     }
 
     cargar() {
         let datos = this.#storage.obtener(this.#clave, []);
-        this.#ventas = datos.map(d => JSON.parse(d));
+        this.#ventas = datos.map(d => Venta.fromJSON(d));
     }
 }

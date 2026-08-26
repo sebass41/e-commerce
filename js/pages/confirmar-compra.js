@@ -63,10 +63,10 @@ function mostrarMapa(){
 
 async function buscarDireccion(direccion) {
   let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
-  let response = await fetch(url);
-  let data = await response.json();
+  let respuesta = await fetch(url);
+  let datos = await respuesta.json();
 
-  if (data.length > 0) {
+  if (datos.length > 0) {
     let lat = parseFloat(data[0].lat);
     let lon = parseFloat(data[0].lon);
 
@@ -80,12 +80,11 @@ async function buscarDireccion(direccion) {
 
 async function obtenerDireccion(lat, lon) {
   let url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
-  let response = await fetch(url);
-  let data = await response.json();
+  let respuesta = await fetch(url);
+  let datos = await respuesta.json();
 
-  if (data && data.display_name) {
-    // Inserta la dirección textual en el input
-    document.getElementById("direccion").value = data.display_name;
+  if (datos && datos.display_name) {
+    document.getElementById("direccion").value = datos.display_name;
   } else {
     mostrarModal(false, "No se encontró la dirección.");
   }
