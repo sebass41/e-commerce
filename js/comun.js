@@ -1,5 +1,5 @@
 export function esAdmin() {
-    if (localStorage.getItem("sesion") !== "admin") {
+    if (localStorage.getItem("sesion") != "1") {
         return false;
     }
     return true

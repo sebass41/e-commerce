@@ -1,15 +1,15 @@
-import { storage } from "..gestores/GestorStorage.js";
+import { Storage } from "../gestores/gestorStorage.js";
 import { GestorProductos } from "../gestores/GestorProductos.js";
+import {GestorCategorias} from "../gestores/gestorCategorias.js"
+import { protegerPagina } from "../comun.js";
 
-let gestorProductos;
-let storage;
+let storage = new Storage();
+let gestorProductos = new GestorProductos(storage);
+let gestorCategorias = new GestorCategorias(storage);
 
 document.addEventListener("DOMContentLoaded", function() {
     protegerPagina();
     mostrarCategorias();
-
-gestorProductos= new GestorProductos()
-storage= new Storage()
 
     let form = document.getElementById("form-producto");
     if (!form) {
@@ -59,7 +59,7 @@ function mostrarCategorias(){
     let i;
     let option;
 
-    categorias = GestorCategorias.obtenerTodos();
+    categorias = gestorCategorias.obtenerTodos();
     select.innerHTML = "";
 
     option = document.createElement("option");
