@@ -95,7 +95,16 @@ export class GestorProductos {
         return new Respuesta(false, "No se pudo actualizar", []);
     }
 
-    
+    restarStock(id, stock){
+        let producto = this.obtenerPorId(id);
+		
+        if(producto){
+            producto.stock -= stock;
+            this.guardar();
+            return new Respuesta(true, "Actualizado correctamente", []);
+        }
+        return new Respuesta(false, "No se pudo actualizar", []);
+    }
 
     guardar() {
         let datos = this.#productos.map(p => p.toJSON());

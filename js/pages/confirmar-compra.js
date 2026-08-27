@@ -24,8 +24,6 @@ document.addEventListener("DOMContentLoaded", function(){
     mostrarDetalle(items);
 	mostrarMontos();
 	mostrarMapa();
-	let productos = gestorCarrito.obtenerTodos();
-	console.log(productos)
 
 	form.addEventListener("submit", async function(e) {
 		e.preventDefault();
@@ -42,12 +40,26 @@ document.addEventListener("DOMContentLoaded", function(){
 			return;
 		}
 
+		mostrarStock(productos)
 		gestorVentas.registrar(subtotal, iva, total, productos, usuario, direccion);
-
+		for(let i = 0; i < productos.length; i++){
+			let producto = gestorCarrito.buscarItem(productos[i]);
+			gestorProducto.restarStock(producto.idProducto, producto.cantidad);
+		}
+		mostrarStock(productos)
+		gestorCarrito.vaciar();
+		
 		window.location.href = "./index.html";
 	});
 
 });
+
+function mostrarStock(productos){
+	for(let i=0; i < productos.length; i++){
+		let producto = gestorProducto.obtenerPorId(productos[i]);
+		console.log(producto.stock);
+	}
+}
 
 function mostrarMapa(){
 	map = L.map('map').setView([-34.462, -57.84], 13);
@@ -77,8 +89,8 @@ async function buscarDireccion(direccion) {
   let datos = await respuesta.json();
 
   if (datos.length > 0) {
-    let lat = parseFloat(data[0].lat);
-    let lon = parseFloat(data[0].lon);
+    let lat = parseFloat(datos[0].lat);
+    let lon = parseFloat(datos[0].lon);
 
     map.setView([lat, lon], 15);
 
@@ -147,3 +159,4 @@ function obtenerProductos(){
 
 	return productos;
 }
+
