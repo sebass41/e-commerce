@@ -14,7 +14,7 @@ export class GestorCarrito {
         this.cargar();
     }
 
-    obtenerTodos() {
+    obtenerTodos() { 
         return [...this.#items];
     }
 

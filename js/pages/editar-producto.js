@@ -1,7 +1,16 @@
+import { Storage } from "../gestores/gestorStorage.js";
+import { GestorProductos } from "../gestores/gestorProductos.js";
+import { esAdmin } from "../comun.js";
+
+let storage = new Storage();
+let gestorProductos = new GestorProductos(storage);
+
+let seccionProductos = document.getElementById("seccionProductos");
+seccionProductos.addEventListener("click", manejarClick)
 document.addEventListener("DOMContentLoaded", function(){
     verificarAdmin();
 
-    let productos = GestorProductos.obtenerTodos();
+    let productos = gestorProductos.obtenerTodos();
     let filtroCategoria = document.getElementById("filtro-categoria");
     let filtroInput = document.getElementById("filtro-input");
     
@@ -9,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     if (filtroCategoria) {
         filtroCategoria.addEventListener("change", function() {
-            let productosFiltro = GestorProductos.obtenerPorCategoria(this.value).datos;
+            let productosFiltro = gestorProductos.obtenerPorCategoria(this.value).datos;
             
             if (this.value === "todos") {
                 productosFiltro = productos;
@@ -21,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     if (filtroInput) {
         filtroInput.addEventListener("input", function() {
-            let productos = GestorProductos.obtenerTodos();
+            let productos = gestorProductos.obtenerTodos();
             let productosFiltrados = filtrarPorcaracteres(productos, this.value);
             
             mostrarProductos(productosFiltrados);
@@ -71,18 +80,56 @@ function mostrarProductos(productos){
 						<p>Actualmente hay ${producto.stock} en stock</p>
 						<input 
                             type="number" 
-                            id="input${producto.id}" 
+                            data-id="${producto.id}" 
                             name="input${producto.id}"
                             placeholder="1"
                             required>
-						<button class="btn btn-primary" onClick= "actualizarStock(${producto.id})">Modificar</button>
-						<button class="btn btn-secondary" type="button" onclick="eliminarProducto(${producto.id})">Eliminar Producto</button>
-            </div>
+						<button class="btn btn-primary" 
+                                data-id="${producto.id}"
+                                data-accion="actualizarStock">
+                                    Modificar
+                        </button>
+						<button class="btn btn-secondary" 
+                                type="button"
+                                data-id="${producto.id}"
+                                data-accion="eliminar">
+                                    Eliminar Producto
+                        </button>
+            
 					    <div id="resultado${producto.id}"></div>
                     `;
 
         lista.appendChild(div);
     }
+}
+
+function manejarClick(evento) {
+    let boton = evento.target.closest("button[data-accion][data-id]");
+
+    if (boton === null) {
+        return;
+    }
+
+    let idProducto = Number(boton.dataset.id);
+    let accion = boton.dataset.accion;
+
+    if (accion === "actualizarStock") {
+        let input = document.querySelector(`input[data-id="${idProducto}"]`);
+        let nuevaCantidad = Number(input.value);
+
+        let respuesta = gestorProductos.actualizarStock(idProducto, nuevaCantidad);
+
+        if(!respuesta.exito){
+            mostrarModal(false, respuesta.msj);
+        }
+    }
+
+    if (accion === "eliminar") {
+        gestorProductos.eliminar(idProducto);
+    }
+
+    let productos = gestorProductos.obtenerTodos();
+    mostrarProductos(productos);
 }
 
 function verificarAdmin(){
@@ -94,37 +141,3 @@ function verificarAdmin(){
         }
     }
 }
-
-function actualizarStock(id){
-	let productos = leerDeStorage("productos", []);
-	let inputCant = document.getElementById("input"+id);
-	console.log(inputCant)
-    if(!inputCant){
-		alert("Por favor ingrese un número válido para modificar el stock");
-		return;
-	}
-	
-	for(let i= 0; i < productos.length; i++){
-		if(productos[i].id === id){
-			let producto = GestorProductos.obtenerPorId(id).datos;
-			let modificarStock = parseInt(inputCant.value);
-
-			productos[i].stock += modificarStock;
-				
-			guardarEnStorage("productos", productos);
-			mostrarProductos(productos);
-			return;
-		}
-	}
-	
-}
-
-function eliminarProducto(id){
-	let r = GestorProductos.eliminar(id);
-
-    if (r.exito){
-        alert(r.mensaje);
-    }
-    console.log(r)
-}
-
