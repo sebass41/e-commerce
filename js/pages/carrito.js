@@ -88,7 +88,3 @@ function mostrarMontos() {
     document.getElementById("iva").innerText = gestorCarrito.calcularIVA().toFixed(2);
     document.getElementById("total").innerText = gestorCarrito.calcularTotal().toFixed(2);
 }
-
-function actualizarCantidad(){
-    
-}

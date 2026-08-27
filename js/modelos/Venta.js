@@ -15,8 +15,8 @@ export class Venta {
         this.#total = total;
         this.#usuario = usuario;
         this.#fecha = new Date().toString();
-        this.#productos = productos; // array de items del carrito
-        this.#direccion = direccion; // string: dirección escrita o lat/lng
+        this.#productos = productos; 
+        this.#direccion = direccion;
     }
 
     get id() { return this.#id; }

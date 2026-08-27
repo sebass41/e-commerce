@@ -1,11 +1,13 @@
 import { Storage } from "../gestores/gestorStorage.js";
 import { GestorCarrito } from "../gestores/gestorCarrito.js";
 import { GestorProductos } from "../gestores/gestorProductos.js";
+import { GestorVentas } from "../gestores/gestorVentas.js"
 import { mostrarModal } from "../comun.js";
 
 let storage = new Storage();
 let gestorCarrito = new GestorCarrito(storage);
 let gestorProducto = new GestorProductos(storage);
+let gestorVentas = new GestorVentas(storage);
 
 let map;
 let marker;
@@ -22,19 +24,27 @@ document.addEventListener("DOMContentLoaded", function(){
     mostrarDetalle(items);
 	mostrarMontos();
 	mostrarMapa();
+	let productos = gestorCarrito.obtenerTodos();
+	console.log(productos)
 
 	form.addEventListener("submit", async function(e) {
 		e.preventDefault();
 
 		let usuario = document.getElementById("usuario").value;
-		let ubicacion = document.getElementById("ubicacion").value;
+		let direccion = document.getElementById("direccion").value;
+		let subtotal = gestorCarrito.calcularSubtotal();
+		let iva = gestorCarrito.calcularIVA();
+		let total = gestorCarrito.calcularTotal();
+		let productos = obtenerProductos();
 
-		if (!ubicacion) {
+		if (!direccion) {
 			alert("Por favor seleccioná una ubicación en el mapa o escribí una dirección.");
 			return;
 		}
 
-		console.log("Compra confirmada por:", usuario, "Ubicación:", ubicacion);
+		gestorVentas.registrar(subtotal, iva, total, productos, usuario, direccion);
+
+		window.location.href = "./index.html";
 	});
 
 });
@@ -127,3 +137,13 @@ function mostrarMontos() {
    document.getElementById("total").innerText = "$" + gestorCarrito.calcularTotal();
 }
 
+
+function obtenerProductos(){
+	let items = gestorCarrito.obtenerTodos();
+	let productos = [];
+	for(let i = 0; i < items.length; i++){
+		productos.push(items[i].idProducto);
+	}
+
+	return productos;
+}
