@@ -127,6 +127,7 @@ function mostrarCategorias(categorias){
 }
 
 function verificarAdmin(){
+    console.log(esAdmin());
     if(esAdmin()){
         let botonesAdmin = document.querySelectorAll(".admin");
         document.getElementById("login-btn").style.display = "none";

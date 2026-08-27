@@ -25,7 +25,7 @@ function iniciarSesion(correo, contrasena) {
     let pass = "admin"
 
     if (correo === correoAdmin && contrasena === pass) {
-        guardarEnStorage("sesion", 1);
+        guardarEnStorage("sesion", "admin");
         return { exito: true, mensaje: "Inicio de sesión exitoso", datos: null };
     } else {
         return { exito: false, mensaje: "Correo o contraseña incorrectos", datos: null };
