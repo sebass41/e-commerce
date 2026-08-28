@@ -30,4 +30,18 @@ export class Categoria {
         }
         this.#nombre = nombre;
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            nombre: this.nombre
+        };
+    }
+
+    static fromJSON(datos) {
+        return new Categoria(
+            datos.id,
+            datos.nombre
+        );
+    }
 }

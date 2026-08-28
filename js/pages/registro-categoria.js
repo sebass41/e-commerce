@@ -1,3 +1,10 @@
+import { Storage } from "../gestores/gestorStorage.js";
+import { GestorCategorias } from "../gestores/gestorCategorias.js";
+import { mostrarModal, protegerPagina } from "../comun.js";
+
+let storage = new Storage();
+let gestorCategorias = new GestorCategorias(storage);
+
 document.addEventListener("DOMContentLoaded", function() {
    protegerPagina();
 
@@ -10,27 +17,15 @@ document.addEventListener("DOMContentLoaded", function() {
         e.preventDefault();
 
         let nombre = document.getElementById("nombre").value;
-        if(!verificarCategoria(nombre)){
-            alert("Esta categoría ya está agregada");
-            return;
-        }
-        let r = GestorCategorias.registrar(nombre);
         
-        alert(r.mensaje);
+        console.log(nombre);
+        let r = gestorCategorias.registrar(nombre);
+        mostrarModal(r.exito, r.msj);
+        
         limpiarControles();
     });
 });
 
-function verificarCategoria(categoria){
-    let categorias = GestorCategorias.obtenerTodos();
-
-    for(let i = 0; i < categorias.length; i++){
-        if(categoria.toLowerCase() === categorias[i].nombre.toLowerCase()){
-            return false;
-        }
-    }
-    return true;
-}
 
 function limpiarControles(){
     document.getElementById("nombre").value = "";

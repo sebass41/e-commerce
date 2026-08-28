@@ -18,6 +18,10 @@ export class GestorCategorias {
 	}
 
     registrar(nombre) {
+		if(this.existeCategoria(nombre)){
+			return new Respuesta(false, "Ya existe esta categoría");
+		}
+
 		let categoria = new Categoria(
 			this.obtenerSiguienteId(),
 			nombre
@@ -26,9 +30,19 @@ export class GestorCategorias {
 		this.#categorias.push(categoria);
 		this.guardar();
 		
-		return categoria;
+		return new Respuesta(true, "Registrado con éxito");
 	}
     
+	existeCategoria(nombre) {
+		console.log(this.#categorias)
+		let nombreNorm = nombre.trim().toLowerCase();
+
+		return this.#categorias.some(categoria => 
+			categoria.nombre.toLowerCase() === nombreNorm
+		);
+	}
+
+
 
     obtenerPorId(id){
 		let idNumerico= Number(id);
@@ -56,7 +70,8 @@ export class GestorCategorias {
 	
 	cargar() {
 		let datos = this.#storage.obtener(this.#clave, []);
-		this.#categorias = datos.map(d => new Categoria(d.id, d.nombre));
+		this.#categorias = datos.map(d => Categoria.fromJSON(d));
 	}
+
 	
 }

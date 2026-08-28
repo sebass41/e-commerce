@@ -107,13 +107,12 @@ export class GestorProductos {
     }
 
     guardar() {
-        let datos = this.#productos.map(p => p.toJSON());
         this.#storage.guardar(this.#clave, this.#productos);
     }
 
     cargar() {
         let datos = this.#storage.obtener(this.#clave, []);
         this.#productos = datos.map(d => Producto.fromJSON(d));
-    }
+    } 
 
 }
