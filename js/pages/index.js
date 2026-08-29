@@ -81,7 +81,6 @@ function mostrarProductos(productos){
         boton.type = "button";
         boton.textContent = "Ver más";
 
-        // Asignar evento con addEventListener
         boton.addEventListener("click", () => {
             mostrarDetalle(idProducto);
         });

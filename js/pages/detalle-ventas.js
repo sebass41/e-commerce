@@ -1,23 +1,33 @@
-function detalleVenta(id)
-{
-	let respuesta = GestorVentas.obtenerPorId(id);
-	let ventas = respuesta.datos;
-	let contenedorResultado = "resultado" + id;
-	let contenedorDetalle = document.getElementById(contenedorResultado);
-	let productos = ventas.productos;
+import { Storage } from "../gestores/gestorStorage.js";
+import { GestorVentas } from "../gestores/gestorVentas.js";
 
-	contenedorDetalle.innerHTML = " ";
-	for(let i = 0; i < productos.length; i ++){
-		let p = document.createElement("p");
+let storage = new Storage();
+let gestorVentas = new GestorVentas(storage);
 
-		let producto = GestorProductos.obtenerPorId(productos[i].id).datos;
-		p.innerText = producto.nombre + " - " + productos[i].cantidad + "u";
-		contenedorDetalle.appendChild(p);
-	}
-	contenedorDetalle.innerHTML += `<button type="button" onClick="ocultar(${contenedorResultado})" class="btn btn-small">Ocultar</button>`
+export function detalleVenta(id){
+    let venta = gestorVentas.obtenerPorId(id);
+    let contenedorDetalle = document.getElementById(id);
+    contenedorDetalle.innerHTML = "";
+
+    for (let i=0; i < venta.productos.length; i++) {
+        let producto = venta.productos[i];
+        let p = document.createElement("p");
+        p.innerText = `${producto.nombre} - ${producto.cantidad}u`;
+        contenedorDetalle.appendChild(p);
+    }
+
+    let botonOcultar = document.createElement("button");
+    botonOcultar.type = "button";
+    botonOcultar.className = "btn btn-small";
+    botonOcultar.textContent = "Ocultar";
+    botonOcultar.addEventListener("click", () => {
+        contenedorDetalle.innerHTML = "";
+    });
+
+    contenedorDetalle.appendChild(botonOcultar);
 }
 
-function ocultar(contenedorResultado)
-{
+
+function ocultar(contenedorResultado){
 	contenedorResultado.innerHTML = " ";
 }

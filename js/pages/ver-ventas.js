@@ -1,42 +1,59 @@
-	document.addEventListener("DOMContentLoaded", function(){
+import { Storage } from "../gestores/gestorStorage.js";
+import { GestorVentas } from "../gestores/gestorVentas.js";
+import { detalleVenta } from "./detalle-ventas.js";
+import { esAdmin } from "../comun.js";
+
+let storage = new Storage();
+let gestorVentas = new GestorVentas(storage);
+
+document.addEventListener("DOMContentLoaded", function(){
     verificarAdmin();
 
-    let ventas = GestorVentas.obtenerTodos();
+    let ventas = gestorVentas.obtenerTodos();
     mostrarVentas(ventas);
  });
 
 
 function mostrarVentas(ventas){
     let lista = document.getElementById("seccionVentas");
-    let i;
-    let venta;
-    let div;
-
     lista.innerHTML = "";
-    console.log(ventas === null);
-    if (ventas === null || ventas.length === 0) {
+    
+    if (!ventas || ventas.length === 0) {
         lista.innerHTML = "<p>Todavía no hay ventas</p>";
         return;
     } 
 
-    for (i = 0; i < ventas.length; i++) {
-        venta = ventas[i];
-        div = document.createElement("div");
+    for (let i=0; i<ventas.length; i++) {
+        let venta = ventas[i];
+        let div = document.createElement("div");
+        let detalleDiv = document.createElement("div");
+        let boton = document.createElement("button");
+
         div.className = "dashboard-card";
-        
-        div.innerHTML =`
-                        <h3>${venta.fecha}</h3>
-                        <p><b>Subtotal: </b>$${venta.subtotal}</p>
-						<p><b>IVA: </b>$${venta.iva}</p>
-						<p><b>Total: </b>$${venta.total}</p>
-						<p><b>Usuario: </b>${venta.usuario}</p>
-                        <button class="btn btn-secodary" type="button" onClick="detalleVenta(${venta.id})">Ver más</button>
-					    <div id="resultado${venta.id}"></div>
+        detalleDiv.id = venta.id;
+
+        boton.className = "btn btn-primary";
+        boton.type = "button";
+        boton.textContent = "Ver detalle";
+        boton.addEventListener("click", () => {
+            detalleVenta(venta.id);
+        });
+
+        div.innerHTML = `
+            <h3>${venta.fecha}</h3>
+            <p><b>Subtotal: </b>$${venta.subtotal}</p>
+            <p><b>IVA: </b>$${venta.iva}</p>
+            <p><b>Total: </b>$${venta.total}</p>
+            <p><b>Usuario: </b>${venta.usuario}</p>
+            <p><b>Dirección: </b>${venta.direccion}</p>
         `;
 
+        div.appendChild(boton);
+        div.appendChild(detalleDiv);
         lista.appendChild(div);
     }
 }
+
 
 function verificarAdmin(){
     if(esAdmin()){

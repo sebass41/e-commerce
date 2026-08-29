@@ -33,33 +33,23 @@ document.addEventListener("DOMContentLoaded", function(){
 		let subtotal = gestorCarrito.calcularSubtotal();
 		let iva = gestorCarrito.calcularIVA();
 		let total = gestorCarrito.calcularTotal();
-		let productos = obtenerProductos();
 
 		if (!direccion) {
 			alert("Por favor seleccioná una ubicación en el mapa o escribí una dirección.");
 			return;
 		}
-
-		mostrarStock(productos)
-		gestorVentas.registrar(subtotal, iva, total, productos, usuario, direccion);
-		for(let i = 0; i < productos.length; i++){
-			let producto = gestorCarrito.buscarItem(productos[i]);
-			gestorProducto.restarStock(producto.idProducto, producto.cantidad);
+		console.log(items)
+		gestorVentas.registrar(subtotal, iva, total, items, usuario, direccion);
+		for(let i = 0; i < items.length; i++){
+			gestorProducto.restarStock(items[i].idProducto, items[i].cantidad);
 		}
-		mostrarStock(productos)
+
 		gestorCarrito.vaciar();
 		
 		window.location.href = "./index.html";
 	});
 
 });
-
-function mostrarStock(productos){
-	for(let i=0; i < productos.length; i++){
-		let producto = gestorProducto.obtenerPorId(productos[i]);
-		console.log(producto.stock);
-	}
-}
 
 function mostrarMapa(){
 	map = L.map('map').setView([-34.462, -57.84], 13);
@@ -148,15 +138,3 @@ function mostrarMontos() {
    document.getElementById("iva").innerText = "$" + gestorCarrito.calcularIVA();
    document.getElementById("total").innerText = "$" + gestorCarrito.calcularTotal();
 }
-
-
-function obtenerProductos(){
-	let items = gestorCarrito.obtenerTodos();
-	let productos = [];
-	for(let i = 0; i < items.length; i++){
-		productos.push(items[i].idProducto);
-	}
-
-	return productos;
-}
-
