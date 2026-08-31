@@ -96,22 +96,33 @@ Las dependencias se resuelven usando `import` y `export`.
 
 ## API de mapa y ubicación
 
-`confirmar-compra.js` utiliza `fetch` para consultar las APIs públicas:
+`confirmar-compra.js` utiliza la librería **Leaflet.js** junto con las APIs públicas de **OpenStreetMap** y **Nominatim** para mostrar un mapa interactivo y obtener la dirección del usuario de manera más dinámica.
 
-* **OpenStreetMap:** Muestra un mapa interactivo donde al hacer click en este, aparece un marcador con latitud y longitud de la posición marcada.
-* **Nominatim:** Motor de búsqueda de direcciones para datos de OpenStreetMap.
+* **OpenStreetMap:** Proporciona las imágenes del mapa. Cada mapa se compone de pequeñas imágenes, que se solicitan con la siguiente URL:
 
 ```text
-https://api.frankfurter.dev/v2/rates?base=UYU&quotes=USD,EUR
+https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
 ```
 
-La pantalla muestra referencias entre:
+* `{s}`: Subdominio del servidor (a, b, c).
+* `{z}`: Nivel de zoom de la imágen.
+* `{x}`: Coordenada horizontal de la imágen.
+* `{y}`: Coordenada vertical de la imágen.
 
-- Peso uruguayo (UYU)
-- Dólar estadounidense (USD)
-- Euro (EUR)
 
-Las cotizaciones son informativas y pueden variar según la fuente y fecha.
+* **Nominatim**: Motor de búsqueda de direcciones basado en los datos de OpenStreetMap. Se usa en dos modos:
+
+```
+https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}
+```
+
+* **Obtener dirección escrita**: coordenadas(`lat`, `lon`) → dirección textual.
+
+```
+https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}
+```
+
+* **Obtener coordenadas**: dirección textual → coordenadas (`lat`, `lon`).
 
 ## Cómo ejecutar
 
