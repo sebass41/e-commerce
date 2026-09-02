@@ -100,7 +100,7 @@ Las dependencias se resuelven usando `import` y `export`.
 
 * **OpenStreetMap:** Proporciona las imágenes del mapa. Cada mapa se compone de pequeñas imágenes, que se solicitan con la siguiente URL:
 
-```text
+```javascript
 https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
 ```
 
@@ -112,13 +112,13 @@ https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
 
 * **Nominatim**: Motor de búsqueda de direcciones basado en los datos de OpenStreetMap. Se usa en dos modos:
 
-```
+```javascript
 https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}
 ```
 
 * **Obtener dirección escrita**: coordenadas(`lat`, `lon`) → dirección textual.
 
-```
+```javascript
 https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}
 ```
 
