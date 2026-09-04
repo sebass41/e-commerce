@@ -11,6 +11,7 @@ let gestorVentas = new GestorVentas(storage);
 
 let map;
 let marker;
+let direccion;
 
 let form = document.getElementById("form-venta");
 
@@ -29,13 +30,11 @@ document.addEventListener("DOMContentLoaded", function(){
 		e.preventDefault();
 
 		let usuario = document.getElementById("usuario").value;
-		let direccion = document.getElementById("direccion").value;
 		let subtotal = gestorCarrito.calcularSubtotal();
 		let iva = gestorCarrito.calcularIVA();
 		let total = gestorCarrito.calcularTotal();
 
 		if (!direccion) {
-			alert("Por favor seleccioná una ubicación en el mapa o escribí una dirección.");
 			return;
 		}
 		console.log(items)
@@ -60,7 +59,7 @@ function mostrarMapa(){
 	}).addTo(map);
 
 	// al hacer click en el mapa
-	map.on('click', function(e) {
+	map.on('click', function(e) { 
 		colocarMarcador(e.latlng.lat, e.latlng.lng);
 		obtenerDireccion(e.latlng.lat, e.latlng.lng);
 	});
@@ -97,8 +96,10 @@ async function obtenerDireccion(lat, lon) {
 
   if (datos && datos.display_name) {
     document.getElementById("direccion").value = datos.display_name;
+	direccion = datos.display_name;
   } else {
     mostrarModal(false, "No se encontró la dirección.");
+	direccion = null;
   }
 }
 
@@ -113,22 +114,56 @@ function colocarMarcador(lat, long){
 }
 
 function mostrarDetalle(items){
-	let contenedorDetalle = document.getElementById("seccionDetalle");
-	
-    contenedorDetalle.innerHTML = "<h2>Detalle de Compra</h2>";
 
-	for(let i = 0; i < items.length; i++){
-		let item = items[i];
-		let producto = gestorProducto.obtenerPorId(item.idProducto);
+    let contenedorDetalle = document.getElementById("seccionDetalle");
 
-		contenedorDetalle.innerHTML +=`
-			<div class="producto-detalle equipo-card">
-				<h3>${producto.nombre}</h3>
-				<p class="equipo-info">Subtotal: $${item.subtotal}</p>
-				<p class="equipo-info">IVA: $${item.calcularIVA()}</p>
-			</div>
-		`;
-	}
+    contenedorDetalle.innerHTML = `
+        <div class="card-body p-4">
+            <h2 class="card-title mb-2">Detalle de compra</h2>
+            <p class="text-secondary mb-2">Productos seleccionados</p>
+            <div class="list-group list-group-flush">
+    `;
+
+    for(let i = 0; i < items.length; i++){
+
+        let item = items[i];
+        let producto = gestorProducto.obtenerPorId(item.idProducto);
+
+        contenedorDetalle.innerHTML += `
+            <div class="list-group-item px-0 py-3">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h5 class="mb-1">
+                            ${producto.nombre} - $${producto.precio}
+                            <span class="badge text-bg-primary">
+                                x${item.cantidad}
+                            </span>
+                        </h5>
+
+                        <small class="text-secondary">
+                            IVA: $${item.calcularIVA()}
+                        </small>
+
+                    </div>
+
+                    <strong class="fs-5">
+                        $${item.subtotal}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        `;
+    }
+
+    contenedorDetalle.innerHTML += `
+            </div>
+        </div>
+    `;
 }
 
 

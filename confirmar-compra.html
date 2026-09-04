@@ -35,31 +35,105 @@
 				</div>
 			</nav>
 		</header>
-	<main class="main-container">
-		<div id="seccionDetalle" class="container"></div>
-        <div id="montos" class="container form-container">
-			<h2>Total</h2>
-            <p>Subtotal: <b id="subtotal"></b></p>
-            <p>IVA: <b id="iva"></b></p>
-            <p>Total: <b id="total"></b></p>
-			<form id="form-venta">
-				<div class="form-group">
-					<label for="usuario">Ingrese persona que retira el pedido:</label>
-					<input type="text" id="usuario" name="usuario" required>
-				</div>
-
-				<div class="form-group">
-					<label for="direccion">Dirección de entrega:</label>
-					<input type="text" id="direccion" name="direccion" placeholder="Av. Artigas 123, Colonia">
-				</div>
-
-				<div id="map" style="height:400px; margin-top:20px;"></div>
-				<input type="hidden" id="ubicacion" name="ubicacion">
+		<main class="container py-5">
+			<div class="row g-4">
 				
-				<button class="btn btn-primary" type="submit">Confirmar compra</button>
-			</form>
-        </div>
-	</main>
+				<div class="col-lg-7">
+					<div id="seccionDetalle" class="card shadow-sm border-0">
+					</div>
+				</div>
+				<div class="col-lg-5">
+					<div id="montos" class="card shadow-sm border-0">
+						<div class="card-body p-4">
+							<h2 class="card-title text-center mb-4"> Resumen de compra </h2>
+
+							<div class="mb-4">
+								<div class="d-flex justify-content-between mb-2">
+									<span>Subtotal</span>
+									<strong id="subtotal"></strong>
+								</div>
+
+								<div class="d-flex justify-content-between mb-2">
+									<span>IVA</span>
+									<strong id="iva"></strong>
+								</div>
+
+								<hr>
+
+								<div class="d-flex justify-content-between align-items-center">
+									<span class="fs-5 fw-bold">Total</span>
+									<strong id="total" class="fs-4 text-primary"></strong>
+								</div>
+							</div>
+
+							<h4 class="mb-3">Datos de entrega</h4>
+
+							<form id="form-venta">
+
+								<div class="mb-3">
+									<label for="usuario" class="form-label fw-semibold">Persona que retira el pedido</label>
+
+									<input
+										type="text"
+										class="form-control"
+										id="usuario"
+										name="usuario"
+										placeholder="Nombre y apellido"
+										required
+									>
+								</div>
+
+
+								<div class="mb-3">
+									<label for="direccion" class="form-label fw-semibold">Dirección de entrega</label>
+
+									<input
+										type="text"
+										class="form-control"
+										id="direccion"
+										name="direccion"
+										placeholder="Av. Artigas 123, Colonia"
+									>
+								</div>
+
+
+								<div class="mb-3">
+
+									<label class="form-label fw-semibold">Ubicación de entrega</label>
+
+									<div
+										id="map"
+										class="rounded border"
+										style="height: 300px;">
+									</div>
+
+								</div>
+
+								<input
+									type="hidden"
+									id="ubicacion"
+									name="ubicacion"
+								>
+
+
+								<button
+									class="btn btn-primary w-100 py-2 fw-bold"
+									type="submit">
+									Confirmar compra </button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="modal" class="modal hidden">
+				<div class="modal-content">
+					<button class="modal-close" id="modal-close">X</button>
+					<h3 id="modal-title"></h3>
+					<p id="modal-message"></p>
+				</div>
+			</div>
+		</main>
 		<script src="js/pages/confirmar-compra.js" type="module"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
