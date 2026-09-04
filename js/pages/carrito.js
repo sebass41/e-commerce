@@ -62,17 +62,26 @@ function mostrarCarrito(){
                 <img src="${producto.imagen}" height="100px">
                 <h3>${producto.nombre}</h3>
                 <p>${producto.descripcion}</p>
-                <input type="number"
-						data-id="${producto.id}"
-                        value="${items[i].cantidad}"
-                        min="1"
-                        max="${producto.stock}"
-                >
-				<button class="btn btn-small" 
-                        type="button"
-                        data-accion="cambiarCantidad"
-                        data-id="${producto.id}">OK</button>
+                
+                <div class="col-12 col-md-3"> 
+                    <label class="form-label small text-muted mb-1"> Cantidad </label> 
+                    <div class="input-group cantidad-input"> 
+                        <input type="number" 
+                                class="form-control text-center" 
+                                data-id="${producto.id}" 
+                                value="${items[i].cantidad}" 
+                                min="1" 
+                                max="${producto.stock}"> 
+                        
+                        <button class="btn btn-outline-primary" 
+                                type="button" 
+                                data-accion="cambiarCantidad" 
+                                data-id="${producto.id}"> OK </button> 
+                        </div> 
+                    </div>
+
 				<h2>$${items[i].subtotal}</h2>
+                
 				<button class="btn btn-secondary" 
                         type="button" 
                         data-accion="eliminar" 
