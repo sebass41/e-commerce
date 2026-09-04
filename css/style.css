@@ -9,7 +9,7 @@ body {
 }
 
 h1, h2, h3 {
-    color: #d35400; /* Naranja oscuro */
+    color: #0074FE; /* Naranja oscuro */
     border-bottom: 2px solid #e67e22; /* Naranja */
     padding-bottom: 8px;
 }
@@ -20,7 +20,7 @@ h2 {
 
 /* Navbar */
 .navbar {
-   /* background-color: #d35400;*/
+   /* background-color: #0074FE;*/
     color: white;
     padding: 15px 20px;
     position: sticky;
@@ -51,7 +51,7 @@ h2 {
 }
 
 .navbar-menu a, .navbar-menu button {
-    background-color: #ffb347;
+    background-color: #0905fd;
     color: #fff;
     text-decoration: none;
     border: none;
@@ -70,7 +70,7 @@ h2 {
 
 /* Contenedor principal */
 .main-container {
-    max-width: 1200px;
+    max-width: 3000px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -145,7 +145,7 @@ h2 {
     display: inline-block;
     margin: 10px 5px;
     padding: 12px 24px;
-    background-color: #ffb347;
+    background-color: #0905fd;
     color: #fff;
     text-decoration: none;
     border: none;
@@ -164,7 +164,7 @@ h2 {
 }
 
 .btn-primary {
-    background-color: #ff8c00;
+    background-color: #0905fd;
 }
 
 .btn-primary:hover {
@@ -172,7 +172,7 @@ h2 {
 }
 
 .btn-secondary {
-    background-color: #ffb347;
+    background-color: #0905fd;
 }
 
 .btn-secondary:hover {
@@ -180,11 +180,11 @@ h2 {
 }
 
 .btn-success {
-    background-color: #66bb6a;
+    background-color: #0905fd;
 }
 
 .btn-success:hover {
-    background-color: #4caf50;
+    background-color: #0905fd;
 }
 
 .btn-small {
@@ -205,7 +205,7 @@ h2 {
     background-color: #fff3e0;
     border-radius: 8px;
     padding: 20px;
-    border-left: 5px solid #ffa726;
+    border-left: 5px solid #0074FE;
     text-align: center;
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -219,7 +219,7 @@ h2 {
 .dashboard-card h3 {
     margin-top: 0;
     border: none;
-    color: #d35400;
+    color: #0074FE;
 }
 
 .dashboard-card p {
@@ -239,7 +239,7 @@ h2 {
     background-color: #fff3e0;
     border-radius: 8px;
     padding: 20px;
-    border-left: 5px solid #ffa726;
+    border-left: 5px solid #0074FE;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -252,14 +252,14 @@ h2 {
 
 .tarea-card.completada {
     background-color: #e8f5e9;
-    border-left-color: #66bb6a;
+    border-left-color: #0905fd;
     opacity: 0.7;
 }
 
 .tarea-card h3 {
     margin-top: 0;
     border: none;
-    color: #d35400;
+    color: #0074FE;
 }
 
 .tarea-header {
@@ -283,12 +283,12 @@ h2 {
 }
 
 .tarea-prioridad.media {
-    background-color: #ffa726;
+    background-color: #0074FE;
     color: white;
 }
 
 .tarea-prioridad.baja {
-    background-color: #66bb6a;
+    background-color: #0905fd;
     color: white;
 }
 
@@ -339,7 +339,7 @@ h2 {
     border-radius: 8px;
     padding: 20px;
     margin: 20px 0;
-    border-left: 5px solid #ffa726;
+    border-left: 5px solid #0074FE;
 }
 
 .miembros-lista {
@@ -372,7 +372,7 @@ h2 {
 
 .miembro-lider {
     background-color: #fff3e0;
-    border-left-color: #ffa726;
+    border-left-color: #0074FE;
 }
 
 /* Filtros */
@@ -385,9 +385,9 @@ h2 {
 
 .filter-btn {
     padding: 10px 20px;
-    border: 2px solid #ffb347;
+    border: 2px solid #0905fd;
     background-color: transparent;
-    color: #d35400;
+    color: #0074FE;
     border-radius: 20px;
     cursor: pointer;
     font-weight: 600;
@@ -396,7 +396,7 @@ h2 {
 
 .filter-btn.active,
 .filter-btn:hover {
-    background-color: #ffb347;
+    background-color: #0905fd;
     color: white;
 }
 
@@ -438,7 +438,7 @@ h2 {
     background: none;
     border: none;
     font-size: 28px;
-    color: #d35400;
+    color: #0074FE;
     cursor: pointer;
     padding: 0;
     margin: 0;
@@ -450,7 +450,7 @@ h2 {
 
 .modal h3 {
     margin-top: 0;
-    color: #d35400;
+    color: #0074FE;
 }
 
 .notas-section {
@@ -460,12 +460,12 @@ h2 {
 }
 
 .notas-section h4 {
-    color: #d35400;
+    color: #0074FE;
 }
 
 .nota-item {
     background-color: #fffaf0;
-    border-left: 4px solid #ffa726;
+    border-left: 4px solid #0074FE;
     padding: 12px;
     margin: 10px 0;
     border-radius: 4px;
@@ -494,7 +494,7 @@ p {
 }
 
 a {
-    color: #d35400;
+    color: #0074FE;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -555,7 +555,7 @@ a:hover {
 }
 
 .success {
-    color: #66bb6a;
+    color: #0905fd;
     font-weight: bold;
 }
 
@@ -569,7 +569,7 @@ a:hover {
     padding: 20px;
     margin: 15px 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border-top: 3px solid #ffa726;
+    border-top: 3px solid #0074FE;
 }
 
 /* Responsive design */
